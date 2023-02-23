@@ -1,0 +1,33 @@
+<git by linux -> git-scm(git 정식 명령어들)>
+0. git status >>깃 상태 확인
+
+1. 폴더에 git init >>> .git 생성
+
+2. git add ??? >> 로컬 저장소에 있는 ??? 파일을 깃에서 관리하게 하겠다.
+
+3. 깃 저장소에 커밋: git commit -m "커밋할 때 사용할 이름" 
+
+4.if 파일을 수정하면 다시 add하고 커밋해야함.
+
+5.git branch : 브랜치 조회
+
+6. git branch '새로운 브랜치' mastrer(기존 브랜치) : 기존 브랜치에서 '새로운 브랜치' 만들기
+
+7.git checkout '브랜치명' : '브랜치명'으로 브랜치 전환 (만약 A브랜치에서 커밋한 파일을 수정해서 b브랜치에서 커밋하면 A브랜치에는 수정 전 파일이, b브랜치에는 수정 후 파일이 커밋되어있음
+
+8.푸쉬(원격으로 올릴때) : git push -u "remote명" "브랜치명"
+
+8. 토큰 :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(https 오류날때 인데 나는 안됨 버젼이 달라서)
+
+9.ssh 로 푸쉬하는 방법
+
+ -1. ssh-keygen -t rsa -C “본인 GitHub 계정 이메일” 
+>>위 명령어의 의미는 ssh key를 만드는데 rsa(공개키 암호 알고리즘) 방식으로 만들고 C 옵션은 그냥 코멘트라서 쓰셔도 되고 안쓰셔도 됩니다.
+ssh-keygen을 실행하면 terminal 창에 어디 위치에 키를 생성할 건지 지정하라고 나오는데 그냥 엔터키를 누르시면 기본 위치(~/.ssh/id_rsa.pub)에 생성됩니다.
+다음엔 패스워드를 지정하라고 나올텐데 패스워드를 지정하고 싶으시면 입력하시면 되고 아니면 그냥 엔터를 누르셔도 상관없습니다.
+
+ -2.home 에서 cd ./ssh 들어가서 cat id_rsa.pub 해서 나온 키 복사
+
+-3. 깃허브 setting->SSH GPG Keys에서 new ssh key 버튼 눌러서 내용 복사
+
+10. 깃허브->로컬저장소 >>>> git pull
