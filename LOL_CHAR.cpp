@@ -73,6 +73,24 @@ int main()
         finish_with_error(con);
     }
 
+    if (mysql_query(con, "INSERT INTO AD VALUES('Zedd','근딜','A',4800)")){
+        finish_with_error(con);
+    }
+    if (mysql_query(con, "INSERT INTO AD VALUES('Yasuo','근딜','F',6400)")){
+        finish_with_error(con);
+    }
+    if (mysql_query(con, "INSERT INTO AD VALUES('Mis.Fortune','원딜','B',1350)")){
+        finish_with_error(con);
+    }
+    if (mysql_query(con, "INSERT INTO AD VALUES('Ashe','원딜','A',420)")){
+        finish_with_error(con);
+    }
+    if (mysql_query(con, "INSERT INTO AD VALUES('Sion','탱커','C',1350)")){
+        finish_with_error(con);
+    }    
+    if (mysql_query(con, "INSERT INTO AD VALUES('Bbobbi','탱커','B',420)")){
+        finish_with_error(con);
+
     mysql_close(con);
 
     return 0;
