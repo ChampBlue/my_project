@@ -18,16 +18,16 @@ class Data
         }
         void AddDay(int inc)
         {
-            day_ = day_ + inc;
+            day_ += inc;
             
-            if((month_ == 4 || month_ == 6 || month_ == 9 || month_ == 11) && day_ > 30) {
-                day_ = 1;
+            if (month_ == 2 && day_ > 28) {
+                day_ = day_ - 28;
                 month_++;
-            } else if (month_ == 2 && day_ > 28) {
-                day_ = 1;
+            }else if (month_ == 4 || month_ == 6 || month_ == 9 || month_ == 11 && day_ > 30) {
+                day_ = day_ - 30;
                 month_++;
-            } else if (day_ > 31) {
-                day_ = 1;
+            }else if(day_ > 31) {
+                day_ = day_ - 31;
                 month_++;
             }
         }    
@@ -35,9 +35,8 @@ class Data
         void AddMonth(int inc)
         {
             month_ += inc;
-
             if(month_ > 12) {
-                month_ = 1;
+                month_ = month_ - 12;
                 year_++;
             }
         }
@@ -60,8 +59,8 @@ int main()
     while(1){
         cout << endl;
         cout <<endl;
-        cout << "menu" << endl;
-        cout << "1. setting data" << endl;
+        cout << "메뉴" << endl;
+        cout << "1. 오늘의 날짜는?" << endl;
         cout << "2. add day" << endl;
         cout << "3. add month" << endl;
         cout << "4. add year" << endl;
@@ -114,7 +113,7 @@ int main()
                 break;
 
             case 6:
-                cout <<  "bye~~~!!" << endl;
+                cout << "프로그램 종료" << endl;
                 exit(1);
                         
             default:
