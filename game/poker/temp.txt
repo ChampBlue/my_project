@@ -1,0 +1,43 @@
+ vector<Spade> s;
+    for(short i = 2; i < 11; i++) {
+        Spade spade(i);
+        s.push_back(spade);
+    }
+    Spade spade_a('A'), spade_j('J'), spade_k('K'), spade_q('Q');
+    s.push_back(spade_a);
+    s.push_back(spade_j);
+    s.push_back(spade_k);
+    s.push_back(spade_q);
+
+    vector<Heart> h;
+    for(short i = 2; i < 11; i++) {
+        Heart Heart(i);
+        h.push_back(Heart);
+    }
+    Heart Heart_a('A'), Heart_j('J'), Heart_k('K'), Heart_q('Q');
+    h.push_back(Heart_a);
+    h.push_back(Heart_j);
+    h.push_back(Heart_k);
+    h.push_back(Heart_q);
+
+    vector<Diamond> d;
+    for(short i = 2; i < 11; i++) {
+        Diamond Diamond(i);
+        d.push_back(Diamond);
+    }
+    Diamond Diamond_a('A'), Diamond_j('J'), Diamond_k('K'), Diamond_q('Q');
+    d.push_back(Diamond_a);
+    d.push_back(Diamond_j);
+    d.push_back(Diamond_k);
+    d.push_back(Diamond_q);
+
+    vector<Club> c;
+    for(short i = 2; i < 11; i++) {
+        Club Club(i);
+        c.push_back(Club);
+    }
+    Club Club_a('A'), Club_j('J'), Club_k('K'), Club_q('Q');
+    c.push_back(Club_a);
+    c.push_back(Club_j);
+    c.push_back(Club_k);
+    c.push_back(Club_q);
