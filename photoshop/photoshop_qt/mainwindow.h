@@ -21,6 +21,7 @@ public:
     ~MainWindow();
     cv::Mat frame;
     cv::Mat load_img;
+    cv::Mat blur_img;
 
 private slots:
     void on_pushButton_clicked();
