@@ -5,6 +5,8 @@
 #include <opencv2/opencv.hpp>
 #include <QLabel>
 #include <QFileDialog>
+#include <QFile>
+#include <QTextStream>
 
 namespace Ui {
 class MainWindow;
@@ -17,6 +19,8 @@ class MainWindow : public QMainWindow
 public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
+    cv::Mat frame;
+    cv::Mat load_img;
 
 private slots:
     void on_pushButton_clicked();
