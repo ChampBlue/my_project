@@ -1,0 +1,3 @@
+/home/mount/work_c/game/dice_game/cmake-build-debug/CMakeFiles/dice_game.dir
+/home/mount/work_c/game/dice_game/cmake-build-debug/CMakeFiles/edit_cache.dir
+/home/mount/work_c/game/dice_game/cmake-build-debug/CMakeFiles/rebuild_cache.dir
