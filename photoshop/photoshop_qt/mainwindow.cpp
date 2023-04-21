@@ -73,6 +73,7 @@ void MainWindow::on_pushButton_3_clicked()
 
 void MainWindow::on_pushButton_4_clicked()
 {
+    ui->label->clear();
     cv::Mat load_temp = load_img.clone();
     cv::Mat gray;
     cv::cvtColor(load_temp, gray, cv::COLOR_RGB2GRAY);
