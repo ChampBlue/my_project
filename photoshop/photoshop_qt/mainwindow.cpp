@@ -49,7 +49,7 @@ void MainWindow::on_pushButton_3_clicked()
     QString fileName = QFileDialog::getOpenFileName(this, tr("Opne Image"), "", tr("Image Files(*.png *.jpg *.bmp"));
     if (!fileName.isEmpty()) {
         load_img = cv::imread(fileName.toStdString());
-        if(load_img.cols != 640 || load_img.rows != 360) {
+        if(load_img.cols > 640 || load_img.rows > 360) {
             cv::Mat resized_image;
             cv::resize(load_img, resized_image, cv::Size(640, 360));
             load_img = resized_image;
@@ -73,10 +73,10 @@ void MainWindow::on_pushButton_5_clicked()
     cv::Mat blur_img;
     cv::blur(load_img, blur_img, cv::Size(5, 5));
 
-    QImage blur_image(blur_img.data, blur_img.cols, blur_img.rows, blur_img.step, QImage::Format_Grayscale8);
+    QImage blur_image(blur_img.data, blur_img.cols, blur_img.rows, blur_img.step, QImage::Format_RGB888);
 
     ui->label->setPixmap(QPixmap::fromImage(blur_image));
-    ui->label->setFixedSize(blur_image.size());
+    ui->label->setFixedSize(blur_image.width(), blur_image.height());
     ui->label->show();
 }
 
