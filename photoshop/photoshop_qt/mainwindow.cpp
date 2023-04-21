@@ -15,6 +15,7 @@ MainWindow::~MainWindow()
 
 void MainWindow::on_pushButton_clicked()
 {
+    ui->label->clear();
     cap.open(0);
     if (!cap.isOpened()) {
         std::cerr << "웹캠이 켜진지 확인" << std::endl;
@@ -52,6 +53,7 @@ void MainWindow::on_pushButton_2_clicked()
 
 void MainWindow::on_pushButton_3_clicked()
 {
+    ui->label->clear();
     fileName = QFileDialog::getOpenFileName(this, tr("Opne Image"), "", tr("Image Files(*.png *.jpg *.bmp"));
     if (!fileName.isEmpty()) {
         load_img = cv::imread(fileName.toStdString());
@@ -60,7 +62,7 @@ void MainWindow::on_pushButton_3_clicked()
             cv::resize(load_img, resized_image, cv::Size(640, 360));
             load_img = resized_image;
         }
-
+        cv::cvtColor(load_img, load_img, cv::COLOR_BGR2RGB);
         QImage qImage(load_img.data, load_img.cols, load_img.rows, load_img.step, QImage::Format_RGB888);
         QPixmap qPixmap = QPixmap::fromImage(qImage);
 
@@ -117,9 +119,7 @@ void MainWindow::on_pushButton_7_clicked()
         if (cap.read(frame)) {
             QString file_path = QFileDialog::getSaveFileName(this, "Save Image", ".", "Image Files (*.png *.jpg *.bmp)");
             if (!file_path.isEmpty()) {
-                cv::Mat frame2;
-                cv::cvtColor(frame, frame2, cv::COLOR_RGB2BGR);
-                cv::imwrite(file_path.toStdString(), frame2);
+                cv::imwrite(file_path.toStdString(), frame);
                 std::cout << "Saved image to " << file_path.toStdString() << std::endl;
             }
         }
