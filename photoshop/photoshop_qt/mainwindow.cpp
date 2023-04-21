@@ -69,6 +69,9 @@ void MainWindow::on_pushButton_3_clicked()
         ui->label->setPixmap(qPixmap.scaled(ui->label->size(), Qt::KeepAspectRatio, Qt::FastTransformation));
         ui->label->show();
     }
+
+    if(cap.isOpened())
+        cap.release();
 }
 
 void MainWindow::on_pushButton_4_clicked()
@@ -83,9 +86,12 @@ void MainWindow::on_pushButton_4_clicked()
     ui->label->setPixmap(QPixmap::fromImage(gray_image));
     ui->label->setFixedSize(gray_image.width(), gray_image.height());
     ui->label->show();
+
+    if(cap.isOpened())
+        cap.release();
 }
 
-void MainWindow::on_pushButton_5_clicked()
+void MainWindow::on_pushButton_5_clicked()      //blur
 {
     ui->label->clear();
     cv::Mat load_temp = load_img.clone();
@@ -96,19 +102,27 @@ void MainWindow::on_pushButton_5_clicked()
     ui->label->setPixmap(QPixmap::fromImage(blur_image));
     ui->label->setFixedSize(blur_image.width(), blur_image.height());
     ui->label->show();
+
+    if(cap.isOpened())
+        cap.release();
 }
 
-void MainWindow::on_pushButton_6_clicked()
+void MainWindow::on_pushButton_6_clicked()  //sharp
 {
     ui->label->clear();
-    cv::Mat gap_img = load_img - blur_img;
-    cv::Mat sharp_img = load_img + gap_img;
+    cv::Mat load_temp = load_img.clone();
+    cv::Mat blur_temp = blur_img.clone();
+    cv::Mat gap_img = load_temp - blur_temp;
+    cv::Mat sharp_img = load_temp + gap_img;
 
     QImage sharp_image(sharp_img.data, sharp_img.cols, sharp_img.rows, sharp_img.step, QImage::Format_RGB888);
 
     ui->label->setPixmap(QPixmap::fromImage(sharp_image));
     ui->label->setFixedSize(sharp_image.width(), sharp_image.height());
     ui->label->show();
+
+    if(cap.isOpened())
+        cap.release();
 
 }
 void MainWindow::on_pushButton_7_clicked()
