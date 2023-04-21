@@ -21,7 +21,7 @@ public:
     ~MainWindow();
     cv::Mat frame;
     cv::Mat load_img;
-    cv::Mat blur_img;
+    cv::Mat blur_img = cv::Mat::zeros(load_img.size(), CV_8UC1);
     QString fileName;
 
 private slots:
