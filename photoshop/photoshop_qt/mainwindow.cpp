@@ -52,7 +52,7 @@ void MainWindow::on_pushButton_2_clicked()
 
 void MainWindow::on_pushButton_3_clicked()
 {
-    QString fileName = QFileDialog::getOpenFileName(this, tr("Opne Image"), "", tr("Image Files(*.png *.jpg *.bmp"));
+    fileName = QFileDialog::getOpenFileName(this, tr("Opne Image"), "", tr("Image Files(*.png *.jpg *.bmp"));
     if (!fileName.isEmpty()) {
         load_img = cv::imread(fileName.toStdString());
         if(load_img.cols > 640 || load_img.rows > 360) {
@@ -118,7 +118,7 @@ void MainWindow::on_pushButton_7_clicked()
             QString file_path = QFileDialog::getSaveFileName(this, "Save Image", ".", "Image Files (*.png *.jpg *.bmp)");
             if (!file_path.isEmpty()) {
                 cv::Mat frame2;
-                cv::cvtColor(frame, frame2, cv::COLOR_BGR2RGB);
+                cv::cvtColor(frame, frame2, cv::COLOR_RGB2BGR);
                 cv::imwrite(file_path.toStdString(), frame2);
                 std::cout << "Saved image to " << file_path.toStdString() << std::endl;
             }
