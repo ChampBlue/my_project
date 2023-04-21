@@ -41,8 +41,14 @@ void MainWindow::on_pushButton_clicked()
 
 void MainWindow::on_pushButton_2_clicked()
 {
-
+    QString file_path = QFileDialog::getSaveFileName(this, "Save Image", ".", "Image Files (*.png *.jpg *.bmp)");
+    if (!file_path.isEmpty()) {
+        const QPixmap* pixmap = ui->label->pixmap();
+        QPixmap saved_pixmap = QPixmap(*pixmap);
+        saved_pixmap.save(file_path);
+    }
 }
+
 
 void MainWindow::on_pushButton_3_clicked()
 {
