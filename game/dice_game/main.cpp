@@ -3,6 +3,7 @@
 #include <vector>
 #include <string>
 #include <random>
+#include <mysql/mysql.h>
 
 class DiceGame {
     int player_money;
@@ -24,6 +25,12 @@ public:
     }
 };
 
+void finish_with_error(MYSQL* con) {
+    fprintf(stderr, "%s\n", mysql_error(con));
+    mysql_close(con);
+    exit(1);
+}
+
 int main()
 {
     int seed_money;
@@ -32,6 +39,22 @@ int main()
     std::cout << std::endl;
 
     DiceGame dice_game(seed_money);
+    MYSQL* con = mysql_init(NULL);
+
+    if (con == NULL) {
+        fprintf(stderr, "%s\n", mysql_error(con));
+        exit(1);
+    }
+    if (!mysql_real_connect(con, "localhost", "root", "iot123", NULL, 3306, NULL, 0))
+        finish_with_error(con);
+    else
+        std::cout << "mysql connect success" << std::endl;
+    if (mysql_query(con, "USE dice_game")) {
+        if (mysql_query(con, "CREATE DATABASE dice_game"))
+            finish_with_error(con);
+        else
+            std::cout << "Database selected" << std::endl;
+    }
 
     std::vector<cv::Mat*> p_mat;
     cv::Mat* dice_arr = new cv::Mat[6];
