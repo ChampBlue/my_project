@@ -6,8 +6,9 @@
 #include <mysql/mysql.h>
 
 class DiceGame {
-    int player_money;
 public:
+    int player_money;
+
     DiceGame(int seed_money) : player_money(seed_money) {}
     void betting(int bet_money) {
         player_money -= bet_money;
@@ -49,12 +50,6 @@ int main()
         finish_with_error(con);
     else
         std::cout << "mysql connect success" << std::endl;
-    if (mysql_query(con, "USE dice_game")) {
-        if (mysql_query(con, "CREATE DATABASE dice_game"))
-            finish_with_error(con);
-        else
-            std::cout << "Database selected" << std::endl;
-    }
 
     std::vector<cv::Mat*> p_mat;
     cv::Mat* dice_arr = new cv::Mat[6];
@@ -82,6 +77,23 @@ int main()
     std::cin >> bet_money;
     std::cout << std::endl;
 
+    MYSQL_RES* result = mysql_store_result(con);
+    if (result == NULL)
+        finish_with_error(con);
+
+    MYSQL_ROW row = mysql_fetch_row(result);
+    int table_exists = atoi(row[0]);
+    mysql_free_result(result);
+
+    if (!table_exists) {
+        if (mysql_query (con, "CREATE TABLE dice_game (idx INT PRIMARY KEY AUTO_INCREMENT, money INT)"));
+        finish_with_error(con);
+    }
+
+    if (mysql_query (con, "USE dice_game")) {
+        finish_with_error(con);
+    }
+
     dice_game.betting(bet_money);
 
     std::random_device rd;
@@ -98,8 +110,17 @@ int main()
 
     dice_game.bet_result(choice, choice2, random_index, random_index, bet_money);
 
+    std::string query = "INSERT INTO (money) VALUES ("+ std::to_string (dice_game.player_money) + ")";
+    if (mysql_query (con, query.c_str()))
+        finish_with_error(con);
+
+    if (mysql_query(con, "SELECT * FROM dice_game"))
+        finish_with_error(con);
+
     cv::waitKey(0);
 
     delete[] dice_arr;
+    mysql_close(con);
+
     return 0;
 }

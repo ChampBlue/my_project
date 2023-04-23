@@ -316,4 +316,13 @@ CMakeFiles/dice_game.dir/main.cpp.o: \
  /usr/include/c++/7/random /usr/include/c++/7/bits/random.h \
  /usr/include/x86_64-linux-gnu/c++/7/bits/opt_random.h \
  /usr/include/c++/7/bits/random.tcc /usr/include/c++/7/numeric \
- /usr/include/c++/7/bits/stl_numeric.h
+ /usr/include/c++/7/bits/stl_numeric.h /usr/include/mysql/mysql.h \
+ /usr/lib/gcc/x86_64-linux-gnu/7/include/stdbool.h \
+ /usr/include/mysql/field_types.h /usr/include/mysql/my_list.h \
+ /usr/include/mysql/mysql_com.h /usr/include/mysql/my_command.h \
+ /usr/include/mysql/my_compress.h \
+ /usr/include/mysql/mysql/udf_registration_types.h \
+ /usr/include/mysql/mysql/client_plugin.h \
+ /usr/include/mysql/mysql/plugin_auth_common.h \
+ /usr/include/mysql/mysql_version.h /usr/include/mysql/mysql_time.h \
+ /usr/include/mysql/errmsg.h
