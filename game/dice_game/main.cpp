@@ -51,6 +51,11 @@ int main()
     else
         std::cout << "mysql connect success" << std::endl;
 
+    if (mysql_query (con, "USE Dicegame")) {
+        if (mysql_query (con, "CREATE DATABASE Dicegame"))
+            finish_with_error(con);
+    }
+
     std::vector<cv::Mat*> p_mat;
     cv::Mat* dice_arr = new cv::Mat[6];
 
@@ -85,12 +90,11 @@ int main()
     int table_exists = atoi(row[0]);
     mysql_free_result(result);
 
+    if (mysql_query (con, "USE Dicegame"))
+        finish_with_error(con);
+
     if (!table_exists) {
         if (mysql_query (con, "CREATE TABLE dice_game (idx INT PRIMARY KEY AUTO_INCREMENT, money INT)"));
-        finish_with_error(con);
-    }
-
-    if (mysql_query (con, "USE dice_game")) {
         finish_with_error(con);
     }
 
