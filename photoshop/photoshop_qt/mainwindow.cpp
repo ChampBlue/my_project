@@ -23,7 +23,7 @@ MainWindow::MainWindow(QWidget *parent) :
     }
 
     QSqlQuery query(db);
-    query.exec("CREATE TABLE image(image_name varchar(30),save_date varchar(50),size varchar(15),type varchar(5),channels varchar(5),depth varchar(5));");
+    query.exec("CREATE TABLE image(image_name text,save_date varchar(50),size varchar(15),type varchar(5),channels varchar(5),depth varchar(5));");
 }
 
 MainWindow::~MainWindow()
@@ -81,6 +81,8 @@ void MainWindow::on_pushButton_3_clicked()
             cv::resize(load_img, resized_image, cv::Size(640, 360));
             load_img = resized_image;
         }
+
+        sql_img = load_img.clone();
         cv::cvtColor(load_img, load_img, cv::COLOR_BGR2RGB);
         QImage qImage(load_img.data, load_img.cols, load_img.rows, load_img.step, QImage::Format_RGB888);
         QPixmap qPixmap = QPixmap::fromImage(qImage);
@@ -162,9 +164,14 @@ void MainWindow::on_pushButton_8_clicked()
     QString image_type = QString::number(sql_img.type());
     QString image_channels = QString::number(sql_img.channels());
     QString image_depth = QString::number(sql_img.depth());
+
     QSqlQuery query(db);
     QString insert_query = "INSERT INTO image VALUES('%1','%2','%3','%4','%5','%6');";
-    insert_query = insert_query.arg(fileName,time_Str,image_size,image_type,image_channels,image_depth);
-    query.exec(insert_query);
-    std::cout <<"img_info is saved" << std::endl;
+    insert_query = insert_query.arg(fileName) .arg(time_Str) .arg(image_size) .arg(image_type) .arg(image_channels) .arg(image_depth);
+
+    if (query.exec(insert_query)) {
+        std::cout <<"img_info is saved" << std::endl;
+    } else {
+        std::cout << "Insertion failed: " << query.lastError().text().toStdString() << std::endl;
+    }
 }
