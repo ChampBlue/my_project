@@ -30,6 +30,8 @@ private slots:
 
     void on_pushButton_clicked();
 
+    void on_database_clicked();
+
 private:
     Ui::MainWindow *ui;
 };
@@ -54,5 +56,11 @@ class DiceGame {
         }
     }
 };
+
+void finish_with_error(MYSQL* con) {
+    fprintf(stderr, "%s\n", mysql_error(con));
+    mysql_close(con);
+    exit(1);
+}
 
 #endif // MAINWINDOW_H

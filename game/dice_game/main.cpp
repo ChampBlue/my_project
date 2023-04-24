@@ -93,7 +93,7 @@ int main()
 
     if (!table_exists) {
         if (mysql_query (con, "CREATE TABLE dice_game (idx INT PRIMARY KEY AUTO_INCREMENT, money INT)"))
-        finish_with_error(con);
+            finish_with_error(con);
     }
 
     dice_game.betting(bet_money);
@@ -112,7 +112,6 @@ int main()
 
     dice_game.bet_result(choice, choice2, random_index, random_index, bet_money);
 
-
     std::string query = "INSERT INTO dice_game (money) VALUES ("+ std::to_string (dice_game.player_money) + ")";
     if (mysql_query (con, query.c_str()))
         finish_with_error(con);
@@ -122,6 +121,9 @@ int main()
 
     cv::waitKey(0);
 
+	/*if (mysql_query (con, "TRUNCATE TABLE dice_game"))
+		finish_with_error(con);*/
+		
     delete[] dice_arr;
     mysql_close(con);
 

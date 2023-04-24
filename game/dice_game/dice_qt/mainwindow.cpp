@@ -32,4 +32,10 @@ void MainWindow::on_start_clicked()
 {
     int seed_money;
 
+    ui->input_label->
+}
+
+void MainWindow::on_database_clicked()
+{
+
 }
