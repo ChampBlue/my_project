@@ -23,7 +23,7 @@ MainWindow::MainWindow(QWidget *parent) :
     }
 
     QSqlQuery query(db);
-    query.exec("CREATE TABLE image(image_name text,save_date varchar(50),size varchar(15),type varchar(5),channels varchar(5),depth varchar(5));");
+    query.exec("CREATE TABLE image(image_name text,save_date varchar(100),size varchar(30),type varchar(10),channels varchar(10),depth varchar(10));");
 }
 
 MainWindow::~MainWindow()
@@ -70,19 +70,16 @@ void MainWindow::on_pushButton_2_clicked()
 
 void MainWindow::on_pushButton_3_clicked()
 {
-    if(cap.isOpened())
-        cap.release();
     ui->label->clear();
     fileName = QFileDialog::getOpenFileName(this, tr("Open Image"), "", tr("Image Files(*.png *.jpg *.bmp"));
     if (!fileName.isEmpty()) {
         load_img = cv::imread(fileName.toStdString());
+        sql_img = load_img.clone();
         if(load_img.cols > 640 || load_img.rows > 360) {
             cv::Mat resized_image;
             cv::resize(load_img, resized_image, cv::Size(640, 360));
             load_img = resized_image;
         }
-
-        sql_img = load_img.clone();
         cv::cvtColor(load_img, load_img, cv::COLOR_BGR2RGB);
         QImage qImage(load_img.data, load_img.cols, load_img.rows, load_img.step, QImage::Format_RGB888);
         QPixmap qPixmap = QPixmap::fromImage(qImage);
@@ -90,15 +87,17 @@ void MainWindow::on_pushButton_3_clicked()
         ui->label->setPixmap(qPixmap.scaled(ui->label->size(), Qt::KeepAspectRatio, Qt::FastTransformation));
         ui->label->show();
     }
+
+    if(cap.isOpened())
+        cap.release();
 }
 
 void MainWindow::on_pushButton_4_clicked()
 {
     ui->label->clear();
-    cv::Mat load_temp = load_img.clone();
+    cv::Mat load_temp = load_img;
     cv::Mat gray;
     cv::cvtColor(load_temp, gray, cv::COLOR_RGB2GRAY);
-    sql_img = gray.clone();
 
     QImage gray_image(gray.data, gray.cols, gray.rows, gray.step, QImage::Format_Grayscale8);
 
@@ -109,37 +108,38 @@ void MainWindow::on_pushButton_4_clicked()
 
 void MainWindow::on_pushButton_5_clicked()
 {
-
-    if(cap.isOpened())
-        cap.release();
     ui->label->clear();
-    cv::Mat load_temp = load_img.clone();
+    cv::Mat load_temp = load_img;
     cv::blur(load_temp, blur_img, cv::Size(5, 5));
-    sql_img = blur_img.clone();
+
     QImage blur_image(blur_img.data, blur_img.cols, blur_img.rows, blur_img.step, QImage::Format_RGB888);
 
     ui->label->setPixmap(QPixmap::fromImage(blur_image));
     ui->label->setFixedSize(blur_image.width(), blur_image.height());
     ui->label->show();
+
+    if(cap.isOpened())
+        cap.release();
 }
 
 void MainWindow::on_pushButton_6_clicked()
 {
-    if(cap.isOpened())
-        cap.release();
-
     ui->label->clear();
-    cv::Mat load_temp = load_img.clone();
-    cv::Mat blur_temp = blur_img.clone();
-    cv::Mat gap_img = load_temp - blur_temp;
+    cv::Mat load_temp = load_img;
+    cv::blur(load_temp, blur_img, cv::Size(5, 5));
+
+    cv::Mat gap_img = load_temp - blur_img;
     cv::Mat sharp_img = load_temp + gap_img;
-    sql_img = sharp_img.clone();
 
     QImage sharp_image(sharp_img.data, sharp_img.cols, sharp_img.rows, sharp_img.step, QImage::Format_RGB888);
 
     ui->label->setPixmap(QPixmap::fromImage(sharp_image));
     ui->label->setFixedSize(sharp_image.width(), sharp_image.height());
     ui->label->show();
+
+    if(cap.isOpened())
+        cap.release();
+
 }
 
 void MainWindow::on_pushButton_7_clicked()
@@ -160,6 +160,8 @@ void MainWindow::on_pushButton_8_clicked()
     auto now = std::chrono::system_clock::now();
     std::time_t time = std::chrono::system_clock::to_time_t(now);
     QString time_Str = ctime(&time);
+    time_Str = time_Str.trimmed();
+
     QString image_size = QString("%1x%2").arg(sql_img.cols).arg(sql_img.rows);
     QString image_type = QString::number(sql_img.type());
     QString image_channels = QString::number(sql_img.channels());
@@ -167,11 +169,8 @@ void MainWindow::on_pushButton_8_clicked()
 
     QSqlQuery query(db);
     QString insert_query = "INSERT INTO image VALUES('%1','%2','%3','%4','%5','%6');";
-    insert_query = insert_query.arg(fileName) .arg(time_Str) .arg(image_size) .arg(image_type) .arg(image_channels) .arg(image_depth);
+    insert_query = insert_query.arg(fileName,time_Str,image_size,image_type,image_channels,image_depth);
+    query.exec(insert_query);
 
-    if (query.exec(insert_query)) {
-        std::cout <<"img_info is saved" << std::endl;
-    } else {
-        std::cout << "Insertion failed: " << query.lastError().text().toStdString() << std::endl;
-    }
+    std::cout <<"img_info is saved" << std::endl;
 }
