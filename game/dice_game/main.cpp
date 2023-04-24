@@ -15,7 +15,7 @@ public:
     }
     void bet_result(const int& choice, const int& choice2, const int& result, const int& result2, const int& bet_money) {
         if (result == choice - 1 && result2 == choice2 - 1) {
-            player_money += bet_money * 1.9;
+            player_money += bet_money * 2;
             std::cout << "WIN" << std::endl;
             std::cout << "현재 보유 금액 : " << player_money << std::endl;
         }
@@ -51,11 +51,6 @@ int main()
     else
         std::cout << "mysql connect success" << std::endl;
 
-    if (mysql_query (con, "USE Dicegame")) {
-        if (mysql_query (con, "CREATE DATABASE Dicegame"))
-            finish_with_error(con);
-    }
-
     std::vector<cv::Mat*> p_mat;
     cv::Mat* dice_arr = new cv::Mat[6];
 
@@ -82,6 +77,12 @@ int main()
     std::cin >> bet_money;
     std::cout << std::endl;
 
+    if (mysql_query (con, "USE Dicegame"))
+        finish_with_error(con);
+
+    if (mysql_query(con, "SELECT COUNT(*) FROM information_schema.TABLES WHERE (TABLE_SCHEMA = 'Dicegame') AND (TABLE_NAME = 'dice_game')"))
+        finish_with_error(con);
+
     MYSQL_RES* result = mysql_store_result(con);
     if (result == NULL)
         finish_with_error(con);
@@ -90,11 +91,8 @@ int main()
     int table_exists = atoi(row[0]);
     mysql_free_result(result);
 
-    if (mysql_query (con, "USE Dicegame"))
-        finish_with_error(con);
-
     if (!table_exists) {
-        if (mysql_query (con, "CREATE TABLE dice_game (idx INT PRIMARY KEY AUTO_INCREMENT, money INT)"));
+        if (mysql_query (con, "CREATE TABLE dice_game (idx INT PRIMARY KEY AUTO_INCREMENT, money INT)"))
         finish_with_error(con);
     }
 
@@ -114,7 +112,8 @@ int main()
 
     dice_game.bet_result(choice, choice2, random_index, random_index, bet_money);
 
-    std::string query = "INSERT INTO (money) VALUES ("+ std::to_string (dice_game.player_money) + ")";
+
+    std::string query = "INSERT INTO dice_game (money) VALUES ("+ std::to_string (dice_game.player_money) + ")";
     if (mysql_query (con, query.c_str()))
         finish_with_error(con);
 
