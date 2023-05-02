@@ -105,17 +105,14 @@
      <string>database</string>
     </property>
    </widget>
-   <widget class="QLabel" name="input_label">
+   <widget class="QLineEdit" name="input_edit">
     <property name="geometry">
      <rect>
-      <x>200</x>
-      <y>20</y>
+      <x>180</x>
+      <y>10</y>
       <width>181</width>
-      <height>31</height>
+      <height>41</height>
      </rect>
-    </property>
-    <property name="text">
-     <string/>
     </property>
    </widget>
   </widget>
