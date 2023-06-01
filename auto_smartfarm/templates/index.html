@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<tilte>smart farm</title>
+	</head>
+	<body>
+		<h1>video streaming</h1>
+		<img src = "{{ url_for('video') }}" width = "480" height = "480" />
+
+		<button onclick="sendCommand('right')">Right</button>
+		<button onclick="sendCommand('left')">Left</button>
+		<button onclick="sendCommand('default')">Default</button>
+		<button onclick="sendCommand('up')">Up</button>
+		<button onclick="sendCommand('down')">Down</button>
+	
+		<h2>Data</h2>
+		<div id = "data-container">
+			<p>Humidity: {{ humidity }}</p>
+        	<p>Temperature: {{ temperature }}</p>
+        	<p>Lux: {{ lux }}</p>
+        	<p>Humidity Dirt: {{ humidity_dirt }}</p>
+		</div>
+
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.4.1/socket.io.js"></script>
+		<script>
+			var socket = io();
+
+			function sendCommand(command) {
+				socket.emit('command', command);
+			}
+			
+			socket.on('humidity', (value) => {
+				updateData('Humidity', value);
+			});
+			socket.on('temperature', (value) => {
+        		updateData('Temperature', value);
+    		});
+    		socket.on('lux', (value) => {
+        		updateData('Lux', value);
+    		});
+    		socket.on('humidity_dirt', (value) => {
+        		updateData('Humidity_Dirt', value);
+    		});
+
+			function updateData(key, value) {
+				const container = document.getElementById('data-container')
+				const data = document.createElement('p');
+				data.textContent = key + ': ' + value;
+				container.appendChild(data);
+			}
+		</script>
+	</body>
+</html>
